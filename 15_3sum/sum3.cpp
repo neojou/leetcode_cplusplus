@@ -65,13 +65,17 @@ public:
             
             for (j = i + 1, k = size - 1; j < k;) {
                  if(nums[j] + nums[k] == sum) {
-                    num_set[1] = nums[j++];
-                    num_set[2] = nums[k--];
+                    num_set[1] = nums[j];
+                    num_set[2] = nums[k];
                     ret.push_back(num_set);
-                    while(j < k && nums[j] == nums[j-1]) 
+
+                    while(j < k && nums[j] == nums[j+1]) 
                         j++;
-                    while(j < k && nums[k] == nums[k+1])
+
+                    while(j < k && nums[k] == nums[k-1])
                         k--;
+
+		    j++; k--;
                 }
                 else if(nums[j] + nums[k] < sum)
                     j++;
