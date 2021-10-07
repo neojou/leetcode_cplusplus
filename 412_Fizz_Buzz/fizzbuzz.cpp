@@ -1,56 +1,86 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
 
 template <typename T>
-void print_vector(std::vector<T> const &v)
+void print_vector(vector<T> const &v)
 {
-    std::cout << "[";
+    cout << "[";
 
     for (auto it = v.begin(); it != v.end(); it++) {
 	if (it != v.begin())
-	    std::cout << ", ";
-	std::cout << *it;
+	    cout << ", ";
+	cout << *it;
     }
     
-    std::cout << "]";
+    cout << "]";
 }
 
 class Solution {
 public:
-    std::vector<std::string> fizzBuzz(int n) {
+    vector<string> fizzBuzz1(int n) {
         /* parameter check */
         if (n <= 0)
             return {};
         
-        std::vector<std::string> ret = std::vector<std::string>(n);        
+        vector<string> ret = vector<string>(n);        
         
         for (int i = 1; i <= n; i++) {
-            std::string s = "";
+            string s = "";
             
             if (i % 3 == 0)
                 s = "Fizz";
             if (i % 5 == 0)
                 s += "Buzz";
             if (s == "")
-                s = std::to_string(i);
+                s = to_string(i);
             
             ret[i - 1] = s;
         }
         
         return ret;
     }
+
+    vector<string> fizzBuzz2(int n) {
+        /* parameter check */
+        if (n <= 0)
+            return {};
+        
+        vector<string> ret = vector<string>(n);
+        unordered_map<int, string> m;
+	m[5] = "Buzz";
+	m[3] = "Fizz";
+        
+        for (int i = 1; i <= n; i++) {
+            string s = "";
+            
+            for (auto iter = m.begin(); iter != m.end(); iter++)
+                if (i % iter->first == 0)
+                    s += iter->second;
+
+            if (s == "")
+                s = to_string(i);
+            
+            ret[i - 1] = s;
+        }
+        
+        return ret;
+    }
+
 };
 
 int main() {
     Solution s;
 
   
-    std::vector<std::string> results = s.fizzBuzz(15);
+    vector<string> results = s.fizzBuzz2(15);
 
-    std::cout << "[";
+    cout << "[";
     print_vector(results);
-    std::cout << "]" << std::endl;
+    cout << "]" << endl;
 
     return 0;
 }
