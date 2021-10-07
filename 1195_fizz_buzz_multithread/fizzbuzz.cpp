@@ -210,18 +210,11 @@ public:
             if (i <= n) {
                 printFizz();
                 i++;
-                switch (i3) {
-                case 0:
-                case 1:
-                case 3:
-                    s1.notify();
-                    break;
-                case 2:
+                if (i3 == 2) /* only for the number 9 -> 10 */
                     s5.notify();
-                    break;
-                default:
-                    break;
-                }
+                else
+                    s1.notify();
+
                 if (++i3 == 4) {
                     i3 = 0;
                 }
@@ -236,14 +229,10 @@ public:
             if (i <= n) {
                 printBuzz();
                 i++;
-                switch (i5) {
-                    case 0:
-                        s3.notify();
-                        break;
-                    case 1:
-                        s1.notify();
-                        break;
-                }
+                if (i5)
+                    s1.notify();
+                else /* only for the number 5 -> 6 */
+                    s3.notify();
                 if (++i5 == 2) {
                     i5 = 0;
                 }
@@ -329,11 +318,11 @@ void printNumber(int n) {
 int main() {
 
     auto execute = [&](int n) {
-	FizzBuzz1 fb(n);
-	thread ta(&FizzBuzz1::fizz, &fb, printFizz);
-	thread tb(&FizzBuzz1::buzz, &fb, printBuzz);
-	thread tc(&FizzBuzz1::fizzbuzz, &fb, printFizzBuzz);
-	thread td(&FizzBuzz1::number, &fb, printNumber);
+	FizzBuzz2 fb(n);
+	thread ta(&FizzBuzz2::fizz, &fb, printFizz);
+	thread tb(&FizzBuzz2::buzz, &fb, printBuzz);
+	thread tc(&FizzBuzz2::fizzbuzz, &fb, printFizzBuzz);
+	thread td(&FizzBuzz2::number, &fb, printNumber);
 	ta.join();
 	tb.join();
 	tc.join();
