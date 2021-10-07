@@ -112,6 +112,81 @@ public:
     }
 };
 
+class FizzBuzz1 {
+private:
+    int n;
+    bool finished;
+    Semaphore sm;
+    Semaphore s3;
+    Semaphore s5;
+    Semaphore s15;
+
+public:
+    FizzBuzz1(int n) : n(n), sm(0), s3(0), s5(0), finished(false) {}
+
+    // printFizz() outputs "fizz".
+    void fizz(function<void()> printFizz) {
+        while (!finished) {
+            s3.wait();
+            if (!finished)
+                printFizz();
+            sm.notify();
+        }
+    }
+
+    // printBuzz() outputs "buzz".
+    void buzz(function<void()> printBuzz) {
+        while (!finished) {
+            s5.wait();
+            if (!finished)
+                printBuzz();
+            sm.notify();
+        }
+    }
+
+    // printFizzBuzz() outputs "fizzbuzz".
+	void fizzbuzz(function<void()> printFizzBuzz) {
+        while (!finished) {
+            s15.wait();
+            if (!finished)
+                printFizzBuzz();
+            sm.notify();
+        }
+    }
+
+    // printNumber(x) outputs "x", where x is an integer.
+    void number(function<void(int)> printNumber) {
+        for (int i = 1; i <= n; i++) {
+            int r = i % 15;
+            switch (r) {
+            case 0:
+                s15.notify();
+                sm.wait();
+                break;
+            case 3:
+            case 6:
+            case 9:
+            case 12:
+                s3.notify();
+                sm.wait();
+                break;
+            case 5:
+            case 10:
+                s5.notify();
+                sm.wait();
+                break;
+            default:
+                printNumber(i);
+            }
+        }
+        
+        finished = true;
+        s3.notify();
+        s5.notify();
+        s15.notify();
+    }
+};
+
 class FizzBuzz2 {
 private:
     int n;
@@ -254,11 +329,11 @@ void printNumber(int n) {
 int main() {
 
     auto execute = [&](int n) {
-	FizzBuzz2 fb(n);
-	thread ta(&FizzBuzz2::fizz, &fb, printFizz);
-	thread tb(&FizzBuzz2::buzz, &fb, printBuzz);
-	thread tc(&FizzBuzz2::fizzbuzz, &fb, printFizzBuzz);
-	thread td(&FizzBuzz2::number, &fb, printNumber);
+	FizzBuzz1 fb(n);
+	thread ta(&FizzBuzz1::fizz, &fb, printFizz);
+	thread tb(&FizzBuzz1::buzz, &fb, printBuzz);
+	thread tc(&FizzBuzz1::fizzbuzz, &fb, printFizzBuzz);
+	thread td(&FizzBuzz1::number, &fb, printNumber);
 	ta.join();
 	tb.join();
 	tc.join();
