@@ -125,14 +125,12 @@ private:
         if (root == nullptr)
             return vvi;
 
-        vector<int> vi;
         if (level >= vvi.size()) {
-            vi = {root->val};
+            vector<int> vi = {root->val};
             vvi.push_back(vi);
         } else {
-            vi = vvi[level];
+            vector<int> &vi = vvi[level];
             vi.push_back(root->val);
-            vvi[level] = vi;
         }
         
         if (root->left)
