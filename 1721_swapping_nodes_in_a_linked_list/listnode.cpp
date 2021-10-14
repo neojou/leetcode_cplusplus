@@ -103,6 +103,27 @@ public:
         
         return head;    
     }
+
+    ListNode* swapNodes1(ListNode* head, int k) {
+        ListNode *p = head;
+        
+        if (head == nullptr || head->next == nullptr)
+            return head;
+
+        for (int i = 0; i < k - 1; i++)
+            p = p->next;
+        ListNode *a = p;
+        
+        ListNode *b = head;
+        for (p = p->next; p != nullptr; p = p->next, b = b->next);
+        
+        if (a == b)
+            return head;
+        
+        swap(a->val, b->val);
+        
+        return head;
+    }
 };
 
 int main() {
@@ -113,7 +134,7 @@ int main() {
 				new ListNode(4,
 				    new ListNode(5)))));
 
-    ListNode *output = s.swapNodes(head, 2);
+    ListNode *output = s.swapNodes1(head, 2);
     cout << "Output: ";
     print_ListNode(output);
     cout << endl;
