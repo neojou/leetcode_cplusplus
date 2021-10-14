@@ -6,10 +6,11 @@ class Solution {
 public:
     std::vector<int> twoSum(std::vector<int>& nums, int target) {
         std::unordered_map<int, int> m;
+	int num1, num2;
         
         for (int i = 0; i < nums.size(); i++) {
-            int num1 = nums[i];
-            int num2 = target -nums[i];
+            num1 = nums[i];
+            num2 = target - num1;
 
             if (m.count(num2))
                 return {m[num2], i};
