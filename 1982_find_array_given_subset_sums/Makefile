@@ -1,7 +1,7 @@
-PROJECT := listnode 
+PROJECT := subset 
 
 CC := clang++
-OBJS := listnode.o
+OBJS := subset.o
 
 CFLAGS := -arch x86_64 --std=c++11
 LIB := -L /usr/lib
